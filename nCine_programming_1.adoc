@@ -1,0 +1,137 @@
+:revealjs_controls: true
+:revealjs_progress: true
+:revealjs_history: true
+:revealjs_center: true
+:revealjs_transition: slide
+:revealjs_slideNumber: c/t
+:revealjsdir: ../reveal.js
+:customcss: css/myblack.css
+:imagesdir: img/
+:icons: font
+:tabsize: 4
+:source-highlighter: highlightjs
+
+## C++ Engine Programming with nCine
+image::banner.png[role="plain"]
+Part 1: Presentation and Overview
+
+https://ncine.github.io
+
+## The Author
+
+* I'm Angelo "_Encelo_" Theodorou
+* Former AAA game industry engine programmer
+* Amiga and Demoscene lover
+* Arch Linux enthusiast
+* Developing nCine since 2011
+
+## What is nCine?
+
+* Encelo + engine = nCine icon:grin-beam-sweat[]
+* Cross-platform 2D game engine
+  * Linux, Windows, macOS, Android, Emscripten
+* Suitable for games, prototypes, tools, demos
+* https://github.com/nCine[Open source] with a MIT license
+* Small enough to be fully understood by one person
+
+## Main Features
+
+* Written in C++11 but can be scripted with Lua
+* Automatic culling and batching of sprites
+* Uses a custom templated library instead of STL
+* Can use GLFW, SDL2 or Qt5 as desktop backends
+* Integrated with https://github.com/ocornut/imgui[Dear ImGui] and https://github.com/Immediate-Mode-UI/Nuklear[Nuklear]
+* Integrated with https://renderdoc.org/[RenderDoc] and https://bitbucket.org/wolfpld/tracy[Tracy]
+
+### Lua Scripting
+
+image::lua_scripting.png[role="plain"]
+
+### Batching
+
+image::render_batcher.png[role="plain"]
+
+### Particles
+
+image::particles.png[role="plain"]
+
+### ImGui Integration
+
+image::imgui.png[role="plain"]
+
+### Tracy Integration
+
+image::tracy.png[role="plain"]
+
+## Some Development Tools
+
+* https://cmake.org/[CMake] and CPack
+* https://github.com/google/googletest[Google Test] and https://github.com/google/benchmark[Benchmark] libraries
+* http://gcovr.com/[Gcovr] for unit test coverage
+* http://cppcheck.sourceforge.net/[Cppcheck] and http://valgrind.org/[Valgrind]
+* https://clang.llvm.org/docs/ClangFormat.html[clang-format] and http://www.stack.nl/~dimitri/doxygen/[Doxygen]
+
+### Google Tests in Qt Creator
+
+image::gtest.png[role="plain"]
+
+### Gcovr Coverage Report
+
+image::coverage.png[role="plain"]
+
+### Doxygen Documentation
+
+image::doxygen.png[role="plain"]
+
+## Size of the Project
+
+|===
+| Language | Files | Blank | Comment | Code
+
+| C++ | 298 | 10027 | 2074 | 48052
+| Headers | 282 | 5363 | 2944 | 21906
+| CMake | 30 | 399 | 266 | 3079
+| SUM | 648 | 16107 | 5288 | 74295
+
+|===
+
+## Additional Projects
+
+* https://github.com/nCine/ncTemplate[ncTemplate] - CMake template project
+* https://github.com/nCine/ncPong[ncPong] - example Pong game in both C++ and Lua
+* https://github.com/nCine/ncInvaders[ncInvaders] - simplified Space Invaders game
+* https://github.com/nCine/ncParticleEditor[ncParticleEditor] - ImGui based particle editor
+* https://github.com/nCine/ncline[ncline] - CLI tool to download and compile libs and projects
+
+### ncPong
+
+image::ncPong.png[role="plain"]
+
+### ncInvaders
+
+image::ncInvaders.png[role="plain"]
+
+### ncParticleEditor
+
+image::ncParticleEditor.png[role="plain"]
+
+## Potential Topics (1/2)
+
+* CMake build system
+* nCTL: the nCine templated library
+* Unit tests and micro-benchmarks
+* Initialization system and the application classes
+* Input system and events
+* Scenegraph and node hierarchy
+* Rendering commands and queues
+* Automatic sprite batching
+
+## Potential Topics (2/2)
+
+* Audio source and buffers
+* Lua bindings
+* Integrations (ImGui, Nuklear, Tracy, RenderDoc)
+* Particle system
+* Texture loading (PNG, WebP, GPU compressed formats)
+* Threading system (_incomplete_)
+* Filesystem abstraction

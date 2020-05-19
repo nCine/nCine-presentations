@@ -1,0 +1,29 @@
+@startuml
+
+skinparam backgroundColor transparent
+
+start
+
+partition "Update Scenegraph" {
+:sprite.update();
+}
+
+partition "Visit Scenegraph" {
+	:sprite.draw();
+	:sprite.updateRenderCommand();
+	:renderQueue.addCommand();
+}
+
+partition "Draw Scenegraph" {
+	:renderQueue.draw();
+	split
+	:Sort commands;
+	split again
+	:Batch commands;
+	split again
+	:Issue commands;
+	end split
+}
+stop
+
+@enduml

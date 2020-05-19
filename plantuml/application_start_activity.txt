@@ -1,0 +1,24 @@
+@startuml
+
+skinparam backgroundColor transparent
+
+start
+
+Partition "PCApplication::start()" {
+	:PCApplication::init();
+
+	:PCApplication::run();
+
+	Partition "Game Loop" {
+		repeat :PCApplication::processEvents();
+		:PCApplication::step();
+		repeat while (shouldQuit_) is (false)
+		->true;
+	}
+
+	:PCApplication::shutdownCommon();
+}
+
+stop
+
+@enduml

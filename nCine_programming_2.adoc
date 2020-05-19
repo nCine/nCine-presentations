@@ -1,0 +1,108 @@
+:revealjs_controls: true
+:revealjs_progress: true
+:revealjs_history: true
+:revealjs_center: true
+:revealjs_transition: slide
+:revealjs_slideNumber: c/t
+:revealjsdir: ../reveal.js
+:customcss: css/myblack.css
+:imagesdir: img/
+:icons: font
+:tabsize: 4
+:source-highlighter: highlightjs
+
+## C++ Engine Programming with nCine
+image::banner.png[role="plain"]
+Part 2: The Application Life Cycle
+
+https://ncine.github.io
+
+## Main Function
+
+[source, cpp]
+----
+int main(int argc, char **argv)
+{
+	return nc::PCApplication::start(createAppEventHandler);
+}
+----
+
+[source, cpp]
+----
+nc::IAppEventHandler *createAppEventHandler()
+{
+	return new MyEventHandler;
+}
+----
+
+[.notes]
+--
+* On Android the startup process is based around events
+--
+
+## Application Start
+
+image::application_start_activity.png[role="plain"]
+
+## The IAppEventHandler Class
+
+[source, cpp]
+----
+class IAppEventHandler
+{
+  public:
+	virtual void onPreInit(AppConfiguration &config) {}
+	virtual void onInit() {}
+	virtual void onFrameStart() {}
+	virtual void onFrameEnd() {}
+	virtual void onShutdown() {}
+	virtual void onSuspend() {}
+	virtual void onResume() {}
+};
+----
+
+[.notes]
+--
+* The `AppConfiguration` class contains data to configure the engine initialization
+--
+
+## AppConfiguration class
+
+* Logging level and log file name
+* Screen resolution
+* Window title and icons
+* Rendering settings
+* Subsystem optional initializations
+
+## Application Initialization (1/2)
+
+. Start profiling timers
+. Register the logger service as soon as possible
+. `IAppEventHandler::onPreInit()`
+. Construct GfxDevice and InputManager singletons
+. Register remaining services in `ServiceLocator`
+** AudioDevice, ThreadPool, GfxCapabilities
+
+## Application Initialization (2/2)
+
+[start=6]
+. Initialize ImGui and Nuklear drawing classes
+. Construct initial rendering and scenegraph objects
+** `RenderResources`, `RenderQueue`, root `SceneNode`
+. `IAppEventHandler::onInit()`
+
+## Application Step
+
+. Collect input events from backends (GLFW, SDL2)
+. Clear the screen
+. `IAppEventHandler::onFrameStart()`
+. Update, visit and draw the scenegraph root node
+. Update audio players (loop state, streaming buffers)
+. Swap rendering buffers
+
+## Application Shutdown
+
+. `IAppEventHandler::onShutdown()`
+. Reset singletons smart pointers
+. Dispose rendering resources
+. Unregister logger service as late as possible

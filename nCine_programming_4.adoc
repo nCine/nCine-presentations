@@ -1,0 +1,102 @@
+:revealjs_controls: true
+:revealjs_progress: true
+:revealjs_history: true
+:revealjs_center: true
+:revealjs_transition: slide
+:revealjs_slideNumber: c/t
+:revealjsdir: ../reveal.js
+:customcss: css/myblack.css
+:imagesdir: img/
+:icons: font
+:tabsize: 4
+:source-highlighter: highlightjs
+
+## C++ Engine Programming with nCine
+image::banner.png[role="plain"]
+Part 4: Overview of the Rendering System
+
+https://ncine.github.io
+
+## Features
+
+* Uses OpenGL 3.3 and OpenGL ES 3.0
+* Can use http://angleproject.org/[ANGLE] on Windows
+* Supports https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object[VAO], https://www.khronos.org/opengl/wiki/Texture_Storage#Immutable_storage[immutable textures], BO https://www.khronos.org/opengl/wiki/Buffer_Object#Mapping[mapping], indexing
+* Automatic batching and culling of sprites to achieve higher performances
+* Texture loader supporting many GPU compressed formats
+* https://renderdoc.org/docs/in_application_api.html[In-application] integration with https://renderdoc.org/[RenderDoc]
+
+## The Code
+
+* All code related to rendering is in https://github.com/nCine/nCine/tree/develop/src/graphics[`src/graphics`]
+** https://github.com/nCine/nCine/tree/develop/src/graphics/RenderCommand.cpp[`RenderCommand`], https://github.com/nCine/nCine/tree/develop/src/graphics/RenderQueue.cpp[`RenderQueue`], https://github.com/nCine/nCine/tree/develop/src/graphics/RenderBatcher.cpp[`RenderBatcher`], https://github.com/nCine/nCine/tree/develop/src/graphics/RenderResources.cpp[`RenderResources`], https://github.com/nCine/nCine/tree/develop/src/graphics/RenderBuffersManager.cpp[`RenderBuffersManager`], https://github.com/nCine/nCine/tree/develop/src/graphics/RenderVaoPool.cpp[`RenderVaoPool`], https://github.com/nCine/nCine/tree/develop/src/graphics/RenderStatistics.cpp[`RenderStatistics`]
+* OpenGL wrap classes in https://github.com/nCine/nCine/tree/develop/src/graphics/opengl[`src/graphics/opengl`]
+** Low-level code dealing with shaders, textures, BOs, FBOs, VAOs, vertex formats, etc.
+
+[.notes]
+--
+* BO is an OpenGL buffer object
+--
+
+## RenderCommand Class
+
+image::RenderCommand.png[role="plain"]
+
+* Carries all the information to issue a draw call
+* `Material` contains shader related information
+* `Geometry` contains vertex and index data
+
+## RenderQueue Class
+
+image::RenderQueue.png[role="plain"]
+
+* Collects render commands into queues
+* Sorts opaques FtoB and transparents BtoF
+* Batches commands together if batching is enabled
+* Flushes the `RenderBuffersManager`
+* Issue the commands
+
+[.notes]
+--
+* FtoB is front-to-back, to minimize overdraw
+* BtoF is back-to-front, for correct alpha blending
+--
+
+## RenderBatcher Class
+
+* Uniform, vertex, and index BO data is merged
+* Degenerate vertices or indices are created
+* Index values are rewritten
+* Uses a pool of render commands just for batching
+* Already sorted input queue makes it easier to identify split points
+
+## RenderResources Class
+
+* Creates and makes available common resources
+** Creates shader programs and the VAO pool
+** Owns the `RenderBuffersManager` singleton and the projection matrix
+* Has a minimal creation mode for non scenegraph based rendering
+
+## RenderBuffersManager Class
+
+* Handles memory for uniform, vertex, and index BOs
+* Assigns buffer chunks to objects requesting memory
+* Creates more buffers if more memory is required
+* Unmaps or uploads buffers at the end
+
+## RenderVaoPool Class
+
+* Created at start by the `RenderResources` class
+* Binds a Vertex Array Object based on a vertex format
+
+## RenderStatistics Class
+
+* Gathers statistics about the frame being rendered
+** Number of vertices, render commands, instances
+** How many commands are batched
+** How many commands are transparents vs opaque
+** Divides results per type (sprite, particle, gui, etc.)
+
+## Journey of a Render Command
+
+image::rendering_activity.png[role="plain"]

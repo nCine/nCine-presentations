@@ -1,0 +1,18 @@
+:revealjs_controls: false
+:revealjs_progress: false
+:revealjs_history: true
+:revealjs_center: true
+:revealjs_transition: slide
+:revealjs_slideNumber: false
+:revealjsdir: ../reveal.js
+:customcss: css/myblack.css
+:imagesdir: img/
+:icons: font
+:tabsize: 4
+:source-highlighter: highlightjs
+
+## nCine Demo Reel 2020.05
+image::banner.png[role="plain"]
+Cross-platform 2D Game Engine
+
+https://ncine.github.io

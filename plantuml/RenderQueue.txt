@@ -1,0 +1,13 @@
+@startuml
+
+skinparam backgroundColor transparent
+
+class RenderQueue
+{
+	+addCommand(RenderCommand *command)
+	+draw()
+}
+
+RenderQueue *-- RenderBatcher
+
+@enduml

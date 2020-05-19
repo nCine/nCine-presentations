@@ -1,0 +1,115 @@
+:revealjs_controls: true
+:revealjs_progress: true
+:revealjs_history: true
+:revealjs_center: true
+:revealjs_transition: slide
+:revealjs_slideNumber: c/t
+:revealjsdir: ../reveal.js
+:customcss: css/myblack.css
+:imagesdir: img/
+:icons: font
+:tabsize: 4
+:source-highlighter: highlightjs
+
+## nCine 2020.05 Release
+image::banner.png[role="plain"]
+Release Highlights
+
+https://ncine.github.io
+
+## Headlines
+
+* JugiMapAPI supports the nCine
+** Needed several sprite enhancements
+* Qt5 desktop backend
+* SpookyGhost release
+* Nuklear GUI integration
+* FileSystem API
+
+## JugiMap support
+
+* https://github.com/Jugilus/jugimapAPI[JugiMap API] supports the nCine
+* https://github.com/nCine/ncJugiMapAPIDemo[ncJugiMapAPIDemo]
+* https://github.com/nCine/ncJugiMapParallaxScrolling[ncJugiMapParallaxScrolling]
+
+### ncJugiMapAPIDemo
+
+video::JJI9yW46H1A[youtube, options=autoplay]
+
+### ncJugiMapParallaxScrolling
+
+video::0gfgShTNvSw[youtube, options=autoplay]
+
+## Sprite enhancements
+
+* Custom anchor points
+* Non-uniform scaling
+* Texture flipping with a boolean flag
+* Custom blending factors
+
+### apptest_anchor
+
+video::5g30K6ktEc8[youtube, options=autoplay]
+
+## Qt5 desktop backend
+
+* The engine renders inside a https://doc.qt.io/qt-5/qopenglwidget.html[QOpenGLWidget]
+* Gamepad is handled by the https://doc.qt.io/qt-5/qtgamepad-module.html[Qt Gamepad] library
+* Touch events are supported on desktop too!
+** Now with pressure
+** On Qt5 and SDL2
+* It is possible to mix Qt5 with Dear ImGui and Nuklear
+
+### nCine as a custom Qt5 widget
+
+video::PpVLD3ShiCw[youtube, options=autoplay]
+
+## SpookyGhost
+
+* Procedural sprite animation tool
+* Animates sprite properties and shape
+* Exports individual frames or spritesheet
+* Cross-platform (Linux, Windows, macOS)
+* Available on https://encelo.itch.io/spookyghost[itch.io]
+
+### SpookyGhost in action!
+
+video::04KZe4M_4Is[youtube, options=autoplay]
+
+## Nuklear GUI
+
+* Immediate like Dear ImGui, but more skinnable
+* Better suited for game UI
+* Works alongside Dear ImGui and Qt5
+
+## FileSystem API
+
+* Path manipulation functions
+* Directory traversal
+* Can delete, rename and copy files
+* Can create, delete and rename directories
+* Query size, permission, and access time
+* Consistent on all supported platforms
+
+### SpookyGhost file browser
+
+video::0rEi-A6taQw[youtube, options=autoplay]
+
+## Additional features and fixes
+
+* Node inspector in the debug overlay interface
+* Support for http://angleproject.org[ANGLE] rendering libraries on Windows
+* `onResume()/onSuspend()` callbacks
+* Stable render commands sorting
+* C-style strings can be used as hashmap keys
+* PNG and WebP texture saver classes
+* Updated ImGui and Tracy to latest versions
+
+[.notes]
+--
+* If two render commands have the same material sorting key then a secondary key based on node creation time is used
+--
+
+### Node inspector
+
+video::lPMd8fI99gI[youtube, options=autoplay]

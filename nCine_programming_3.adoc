@@ -1,0 +1,94 @@
+:revealjs_controls: true
+:revealjs_progress: true
+:revealjs_history: true
+:revealjs_center: true
+:revealjs_transition: slide
+:revealjs_slideNumber: c/t
+:revealjsdir: ../reveal.js
+:customcss: css/myblack.css
+:imagesdir: img/
+:icons: font
+:tabsize: 4
+:source-highlighter: highlightjs
+
+## C++ Engine Programming with nCine
+image::banner.png[role="plain"]
+Part 3: The Input Manager
+
+https://ncine.github.io
+
+## Introduction
+
+* Most code is in https://github.com/nCine/nCine/tree/develop/src/input[`src/input`]
+* `IInputManager` is an interface
+** GLFW, SDL2, Qt5, and Android implementations
+** Constructed inside `PCApplication::init()`
+* Client code implements `IInputEventHandler`
+* Works with callbacks like `IAppEventHandler`
+
+## The IInputEventHandler Class
+
+[source, cpp]
+----
+class IInputEventHandler
+{
+  public:
+	virtual void onKeyPressed(const KeyboardEvent &event) {}
+	virtual void onKeyReleased(const KeyboardEvent &event) {}
+	virtual void onTouchDown(const TouchEvent &event) {}
+	virtual void onTouchUp(const TouchEvent &event) {}
+	virtual void onTouchMove(const TouchEvent &event) {}
+	virtual void onPointerDown(const TouchEvent &event) {}
+	virtual void onPointerUp(const TouchEvent &event) {}
+
+	virtual void onMouseButtonPressed(const MouseEvent &event) {}
+	virtual void onMouseButtonReleased(const MouseEvent &event) {}
+	virtual void onMouseMoved(const MouseState &state) {}
+	virtual void onScrollInput(const ScrollEvent &event) {}
+
+	virtual void onJoyButtonPressed(const JoyButtonEvent &event) {}
+	virtual void onJoyButtonReleased(const JoyButtonEvent &event) {}
+	virtual void onJoyHatMoved(const JoyHatEvent &event) {}
+	virtual void onJoyAxisMoved(const JoyAxisEvent &event) {}
+
+	virtual void onJoyMappedButtonPressed(const JoyMappedButtonEvent &event) {}
+	virtual void onJoyMappedButtonReleased(const JoyMappedButtonEvent &event) {}
+	virtual void onJoyMappedAxisMoved(const JoyMappedAxisEvent &event) {}
+
+	inline virtual void onJoyConnected(const JoyConnectionEvent &event) {}
+	inline virtual void onJoyDisconnected(const JoyConnectionEvent &event) {}
+};
+----
+
+## Input State and Events
+
+* Client code can react to events or poll state
+** `mouseState()`, `keyboardState()`, `joystickState()`, etc.
+* Backends pass input events to ImGui and Nuklear
+* Backend keys are mapped to `ncine::KeySym`
+
+## GLFW
+
+* `PCApplication::processEvents()` calls `glfwPollEvents()`
+* GLFW callbacks trigger engine input events
+* GLFW provides mouse, keyboard and joystick state
+* Engine polls GLFW joystick states once per frame
+
+## SDL2
+
+* `PCApplication::processEvents()` calls `SDL_PollEvent()`
+* SDL2 events trigger engine input events
+* SDL2 provides mouse, keyboard and joystick state
+** Engine mouse state is updated by SDL_MOUSEMOTION events
+
+## Qt5 / Android
+
+* They lack polling, state is updated at each event
+* Android backend uses JNI to go beyond NDK API
+* Qt5 backend can optionally use `QtGamepad` library
+
+## JoyMapping Class
+
+* It's an SDL2 Game Controller database parser
+* Layered on top of backend joystick events
+* Maps buttons and axes to an Xbox gamepad layout
